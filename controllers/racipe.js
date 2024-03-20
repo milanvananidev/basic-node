@@ -55,3 +55,44 @@ export const getCategoryRacipes = async (req, res, next) => {
         })
     }
 }
+
+export const updateRacipe = async (req, res, next) => {
+    const { racipe } = req.params;
+    const { type, title, category, ingredients, steps } = req.body;
+
+    try {
+
+        await RacipeModal.findByIdAndUpdate(racipe, {
+            type, title, category, ingredients, steps
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: 'Updated successfully'
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: true,
+            message: error.message || 'Internal server error'
+        })
+    }
+}
+
+export const deleteRacipe = async (req, res, next) => {
+    const { racipe } = req.params;
+
+    try {
+        await RacipeModal.findByIdAndDelete(racipe);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Recipe deleted successfully'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: true,
+            message: error.message || 'Internal server error'
+        })
+    }
+}
